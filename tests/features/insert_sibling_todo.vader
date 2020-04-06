@@ -1,0 +1,32 @@
+Given markdown (A todo):
+  - [ ] one
+
+Do (Insert a sibling todo):
+  :TodoListsInsertSiblingTodo\<cr>
+
+Then (A sibling is inserted):
+  Assert match(getline(2), '- \[ \]') == 0
+
+
+Given markdown (A nested todo):
+  - [ ] one
+    - [ ] one a
+      - [ ] one a i
+
+Do (Insert a sibling todo):
+  :TodoListsInsertSiblingTodo\<cr>
+
+Then (The sibling is inserted after the nested todos):
+  Assert match(getline(4), '- \[ \]') == 0
+
+
+Given markdown (A checked todo with a checked parent):
+  - [x] one
+    - [x] one a
+
+Do (Insert a sibling todo):
+  j
+  :TodoListsInsertSiblingTodo\<cr>
+
+Then (The sibling is inserted after the nested todos):
+  Assert match(getline(1), 'x') == -1

@@ -132,6 +132,39 @@ function! s:child_todo(line)
   return repeat(' ', l:child_indentation) . s:UNCHECKED_TODO_INDICATOR
 endfunction
 
+function! s:insert_sibling()
+  call s:uncheck_parent(line('.'))
+  let l:last_descendant = s:find_last_descendant(line('.'))
+  call append(l:last_descendant, s:sibling_todo(line('.')))
+  call cursor(l:last_descendant + 1, col([l:last_descendant + 1, '$']))
+endfunction
+
+
+function! s:sibling_todo(line)
+  let l:indentation = s:get_indentation(a:line)
+  return repeat(' ', l:indentation) . s:UNCHECKED_TODO_INDICATOR
+endfunction
+
+
+function! s:find_last_descendant(line)
+  let l:last_child = s:find_last_child(a:line)
+  if l:last_child == a:line
+    return a:line
+  else
+    return s:find_last_child(l:last_child)
+  endif
+endfunction
+
+
+function! s:find_last_child(line)
+  let l:children = s:find_all_children(a:line)
+  if len(l:children) > 0
+    return l:children[-1]
+  else
+    return a:line
+  endif
+endfunction
+
 
 function! s:find_all_children(line)
   let l:indentation = s:get_indentation(a:line)
@@ -175,3 +208,4 @@ command! TodoListsCheckTodo call s:check()
 command! TodoListsUncheckTodo call s:uncheck()
 command! TodoListsToggleTodo call s:toggle()
 command! TodoListsInsertChildTodo call s:insert_child()
+command! TodoListsInsertSiblingTodo call s:insert_sibling()
