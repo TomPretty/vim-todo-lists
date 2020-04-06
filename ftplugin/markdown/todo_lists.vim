@@ -119,6 +119,20 @@ function! s:is_checked(line)
 endfunction
 
 
+function! s:insert_child()
+  call s:_uncheck(line('.'), 0, 1)
+  call append(line('.'), s:child_todo(line('.')))
+  call cursor(line('.') + 1, col([line('.') + 1, '$']))
+endfunction
+
+
+function! s:child_todo(line)
+  let l:indentation = s:get_indentation(a:line)
+  let l:child_indentation = l:indentation + s:CHILD_INDENTATION_OFFSET
+  return repeat(' ', l:child_indentation) . s:UNCHECKED_TODO_INDICATOR
+endfunction
+
+
 function! s:find_all_children(line)
   let l:indentation = s:get_indentation(a:line)
   let l:next_line = a:line + 1
@@ -160,3 +174,4 @@ endfunction
 command! TodoListsCheckTodo call s:check()
 command! TodoListsUncheckTodo call s:uncheck()
 command! TodoListsToggleTodo call s:toggle()
+command! TodoListsInsertChildTodo call s:insert_child()

@@ -1,0 +1,20 @@
+Given markdown (A todo):
+  - [ ] one
+
+Do (Insert a child todo):
+  :TodoListsInsertChildTodo\<cr>
+
+Then (A child is inserted):
+  Assert match(getline(2), '- \[ \]') == 2
+
+
+Given markdown (A checked todo):
+  - [ ] one
+  - [x] two
+
+Do (Insert a child todo):
+  j
+  :TodoListsInsertChildTodo\<cr>
+
+Then (The todo is unchecked):
+  Assert match(getline(2), 'x') == -1
