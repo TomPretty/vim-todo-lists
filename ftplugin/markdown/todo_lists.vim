@@ -157,7 +157,7 @@ function! s:find_last_descendant(line)
   if l:last_child == a:line
     return a:line
   else
-    return s:find_last_child(l:last_child)
+    return s:find_last_descendant(l:last_child)
   endif
 endfunction
 
