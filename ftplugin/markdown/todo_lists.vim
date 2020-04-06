@@ -105,6 +105,20 @@ function! s:unchecked_line(line)
 endfunction
 
 
+function! s:toggle()
+  if s:is_checked(line('.'))
+    call s:uncheck()
+  else
+    call s:check()
+  endif
+endfunction
+
+
+function! s:is_checked(line)
+  return match(getline(a:line), s:CHECKED_TODO_REGEX) > -1
+endfunction
+
+
 function! s:find_all_children(line)
   let l:indentation = s:get_indentation(a:line)
   let l:next_line = a:line + 1
@@ -145,3 +159,4 @@ endfunction
 
 command! TodoListsCheckTodo call s:check()
 command! TodoListsUncheckTodo call s:uncheck()
+command! TodoListsToggleTodo call s:toggle()

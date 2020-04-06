@@ -1,0 +1,18 @@
+Given markdown (An unchecked todo):
+  - [ ] one
+
+Do (Toggle the todo):
+  :TodoListsToggleTodo\<cr>
+
+Then (The todo is checked):
+  Assert match(getline(1), 'x') > -1
+
+
+Given markdown (A checked todo):
+  - [x] one
+
+Do (Toggle the todo):
+  :TodoListsToggleTodo\<cr>
+
+Then (The todo is unchecked):
+  Assert match(getline(1), 'x') == -1
