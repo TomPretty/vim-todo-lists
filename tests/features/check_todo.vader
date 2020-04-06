@@ -1,0 +1,39 @@
+Given markdown (An unchecked todo):
+   - [ ] one
+
+Do (Check the todo):
+  :TodoListsCheckTodo\<cr>
+
+Then (The todo is checked):
+  Assert match(getline(1), 'x') > -1
+
+
+Given markdown (An unchecked todo with a child):
+  - [ ] one
+    - [ ] one a
+      - [ ] one a i
+  - [ ] two
+
+Do (Check the todo):
+  :TodoListsCheckTodo\<cr>
+
+Then (Both todos are checked):
+  Assert match(getline(1), 'x') > -1
+  Assert match(getline(2), 'x') > -1
+  Assert match(getline(3), 'x') > -1
+  Assert match(getline(4), 'x') == -1
+
+
+Given markdown (A todo with one last unchecked child):
+  - [ ] one
+  - [ ] two
+    - [x] two a
+    - [ ] two b
+
+Do (Check the last todo):
+  3j
+  :TodoListsCheckTodo\<cr>
+
+Then (The parent todo is checked):
+  Assert match(getline(1), 'x') == -1
+  Assert match(getline(2), 'x') > -1
