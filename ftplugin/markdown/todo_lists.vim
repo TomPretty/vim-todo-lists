@@ -64,6 +64,47 @@ function! s:is_checked(line)
 endfunction
 
 
+function! s:_uncheck(line, update_children, update_parent)
+  call s:uncheck_line(a:line)
+  if a:update_children
+    call s:uncheck_all_children(a:line)
+  endif
+  if a:update_parent
+    call s:uncheck_parent(a:line)
+  endif
+endfunction
+
+function! s:uncheck()
+  call s:_uncheck(line('.'), 1, 1)
+endfunction
+
+
+function! s:uncheck_all_children(line)
+  let l:children = s:find_all_children(a:line)
+  for l:child in l:children
+    call s:_uncheck(l:child, 1, 0)
+  endfor
+endfunction
+
+function! s:uncheck_parent(line)
+  let l:parent = s:find_parent(a:line)
+  if l:parent == -1
+    return
+  endif
+  call s:_uncheck(l:parent, 0, 1)
+endfunction
+
+
+function! s:uncheck_line(line)
+  call setline(a:line, s:unchecked_line(a:line))
+endfunction
+
+
+function! s:unchecked_line(line)
+  return substitute(getline(a:line), s:CHECKED_TODO_REGEX, s:UNCHECKED_TODO_INDICATOR, '')
+endfunction
+
+
 function! s:find_all_children(line)
   let l:indentation = s:get_indentation(a:line)
   let l:next_line = a:line + 1
@@ -103,3 +144,4 @@ endfunction
 
 
 command! TodoListsCheckTodo call s:check()
+command! TodoListsUncheckTodo call s:uncheck()
