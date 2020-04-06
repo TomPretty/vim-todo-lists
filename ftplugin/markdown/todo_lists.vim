@@ -1,3 +1,9 @@
+if exists('g:loaded_todo_lists')
+  finish
+endif
+let g:loaded_todo_lists = 1
+
+let g:loaded_fugitive = 1
 let s:TODO_REGEX = '- \[[ x]\] '
 let s:UNCHECKED_TODO_REGEX = '- \[ \] '
 let s:CHECKED_TODO_REGEX = '- \[x\] '
