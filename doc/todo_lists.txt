@@ -41,7 +41,7 @@ USAGE                                                         *TodoListsUsage*
                                      todo if it was previously checked.
                               
 
-:TodoLIstsInsertChildTodo            Inserts a nested todo directly after the
+:TodoListsInsertChildTodo            Inserts a nested todo directly after the
                                      currently selected todo. This will uncheck
                                      the currently selected todo if previously
                                      is was checked.
