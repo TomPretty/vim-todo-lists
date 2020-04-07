@@ -1,0 +1,35 @@
+Given markdown (A todo):
+  - [ ] one
+  - [ ] two
+
+Do (Delete the todo):
+  :TodoListsDeleteTodo\<cr>
+
+Then (The todo has been deleted):
+  Assert match(getline(1), 'two') > -1
+
+
+Given markdown (A todo with children):
+  - [ ] one
+    - [ ] one a
+      - [ ] one a i
+  - [ ] two
+
+Do (Delete the todo):
+  :TodoListsDeleteTodo\<cr>
+
+Then (All nested todos have been deleted):
+  Assert match(getline(1), 'two') > -1
+
+
+Given markdown (A todo with one unchecked child):
+  - [ ] one
+    - [x] one a
+    - [ ] one b
+
+Do (Delete the last unchecked child):
+  2j
+  :TodoListsDeleteTodo\<cr>
+
+Then (The parent is now checked):
+  Assert match(getline(1), 'x') > -1

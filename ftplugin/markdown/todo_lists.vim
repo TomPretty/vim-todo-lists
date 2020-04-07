@@ -3,7 +3,6 @@ if exists('g:loaded_todo_lists')
 endif
 let g:loaded_todo_lists = 1
 
-let g:loaded_fugitive = 1
 let s:TODO_REGEX = '- \[[ x]\] '
 let s:UNCHECKED_TODO_REGEX = '- \[ \] '
 let s:CHECKED_TODO_REGEX = '- \[x\] '
@@ -152,6 +151,29 @@ function! s:sibling_todo(line)
 endfunction
 
 
+function! s:delete()
+  call s:_check(line('.'), 0, 1)
+  call s:delete_with_children(line('.'))
+endfunction
+
+
+function! s:delete_with_children(line)
+  while 1
+    let l:child = s:find_first_child(a:line)
+    if l:child == a:line
+      break
+    endif
+    call s:delete_with_children(l:child)
+  endwhile
+  call s:remove(a:line)
+endfunction
+
+
+function! s:remove(line)
+  execute a:line . "d"
+endfunction
+
+
 function! s:find_last_descendant(line)
   let l:last_child = s:find_last_child(a:line)
   if l:last_child == a:line
@@ -159,6 +181,19 @@ function! s:find_last_descendant(line)
   else
     return s:find_last_descendant(l:last_child)
   endif
+endfunction
+
+
+function! s:find_first_child(line)
+  let l:indentation = s:get_indentation(a:line)
+  let l:next = a:line + 1
+  if l:next <= line('$')
+    let l:next_indentation = s:get_indentation(l:next)
+    if l:next_indentation == l:indentation + s:CHILD_INDENTATION_OFFSET
+      return l:next
+    endif
+  endif
+  return a:line
 endfunction
 
 
@@ -215,3 +250,4 @@ command! TodoListsUncheckTodo call s:uncheck()
 command! TodoListsToggleTodo call s:toggle()
 command! TodoListsInsertChildTodo call s:insert_child()
 command! TodoListsInsertSiblingTodo call s:insert_sibling()
+command! TodoListsDeleteTodo call s:delete()
