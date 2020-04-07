@@ -1,0 +1,59 @@
+*todo_lists.txt* A simple plugin for your markdown todo lists!
+
+==============================================================================
+CONTENTS
+
+  1. About...........................|TodoListsAbout|
+  2. Usage...........................|TodoListsUsage|
+  3. License.........................|TodoListsLicense|
+
+
+==============================================================================
+ABOUT                                                         *TodoListsAbout*
+
+The plugin provides a number of different commands for CRUD operations on
+your markdown todo lists. The main benefit of using the plugin is that it 
+automatically ‘propagates’ changes to the relevant child/parent todos i.e. 
+checking the last child todo will check the parent, deleting a todo will
+delete all the nested todos, etc.
+
+
+==============================================================================
+USAGE                                                         *TodoListsUsage*
+
+:TodoListsCheckTodo                  Checks the current todo and all its nested
+                                     todos. This will also check the parent
+                                     (and potentially further ancestors) if it
+                                     was the last unchecked child.
+
+:TodoListsUncheckTodo                Unchecks the current todo and all its
+                                     nested todos. This will also uncheck all
+                                     ancestor todos.
+
+:TodoListsToggleTodo                 Checks an unchecked todo, unchecks a
+                                     checked one.
+
+:TodoListsInsertSiblingTodo          Inserts a todo at the same level of
+                                     indentation as the current todo.
+                                     The todo is inserted after all nested
+                                     todos of the current todo. This
+                                     will uncheck the parent of the current
+                                     todo if it was previously checked.
+                              
+
+:TodoLIstsInsertChildTodo            Inserts a nested todo directly after the
+                                     currently selected todo. This will uncheck
+                                     the currently selected todo if previously
+                                     is was checked.
+
+:TodoListsDeleteTodo                 Deletes the current todo along with all
+                                     its nested todos (children,
+                                     grandchildren, etc...). This will check
+                                     the parent todo if it was the last
+                                     unchecked child.
+
+
+==============================================================================
+LICENSE                                                     *TodoListsLicense*
+
+The plugin is distriubted under the MIT license. Go wild.
